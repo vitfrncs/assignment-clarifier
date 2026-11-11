@@ -1,8 +1,13 @@
+import json
+
+MODEL_NAME = "qwen3.5:9b-q4_K_M"
+
 def read_assignment():
     text = input("Cole o enunciado da atividade: ")
     return text.strip()
 
 def build_prompt(assignment):
+    """Define o que o modelo deve fazer com a entrada."""
     return f"""
     Analise um enunciado acadêmico sem resolver a atividade.
     Use somente informações do enunciado. Não invente requisitos.
@@ -21,6 +26,17 @@ def build_prompt(assignment):
     Enunciado: {assignment}
 """
 
+def build_payload(prompt, model):
+    """Organiza dados no formato exigido pelo Ollama"""
+    return {
+        "model": model,
+        "messages": [
+            {"role": "user", "content": prompt}
+             ],
+        "stream": False
+    }
+
+
 def main():
     text = read_assignment()
 
@@ -29,7 +45,10 @@ def main():
         return
 
     prompt = build_prompt(text)
-    print(prompt)
+    payload = build_payload(prompt, MODEL_NAME)
+
+    payload_json = json.dumps(payload, ensure_ascii=False, indent=2)
+    print(payload_json)
 
 if __name__ == "__main__":
     main()

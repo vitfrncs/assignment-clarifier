@@ -84,5 +84,5 @@ A integração com o LLM institucional ainda não foi implementada :).
 Execute:
 
 ```bash
-python3 main.py
+python3 src/main.py
 ```
